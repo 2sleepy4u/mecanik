@@ -1,0 +1,19 @@
+import { AboutSlint, Button, VerticalBox, Palette, Slider } from "std-widgets.slint";
+import { CircularProgress } from "./gauge.slint";
+
+export component MainWindow {
+    VerticalBox {
+        width: 100px;
+        alignment: start;
+
+       
+        progress := CircularProgress {
+            height: self.width;
+            progress: slider.value * 1%;
+        }
+        slider := Slider {
+            value: 75;
+            maximum: 100;
+        }
+    }
+}
