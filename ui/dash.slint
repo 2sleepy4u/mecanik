@@ -60,8 +60,38 @@ export component DashProgress {
 				x:  0.5 - 1.25 * cos((n * turn ) );
 				y:  0.5 - 1.25 * sin((n * turn ) );
 			}
+
+			Close {}
 		}
 
+	}
+	for n in divisions: Rectangle {
+		//TODO improve
+		private property <angle> turn: 0.5turn / divisions;
+		private property <length> posx: parent.width / 2.2 - parent.width / 1.22 * cos(n*turn);
+		private property <length> posy: parent.height / 2.25 + parent.height * 1.7 * path.radius * sin(n * -turn);
+
+
+		Path {
+			stroke-width: 1px;
+			stroke: white;
+			viewbox-width: 1;
+			viewbox-height: 1;
+			width: 100%;
+			height: 50%;
+
+			MoveTo {
+				x: 0.5 - 1.4 * cos(((n+0.5) * turn));
+				y: 0.5 - 1.4 * sin(((n+0.5) * turn));
+			}
+
+			LineTo {
+				x:  0.5 - 1.25 * cos(((n+0.5) * turn ) );
+				y:  0.5 - 1.25 * sin(((n+0.5) * turn ) );
+			}
+
+			Close {}
+		}
 	}
     path := Path {
         private property <float> radius: 0.5;

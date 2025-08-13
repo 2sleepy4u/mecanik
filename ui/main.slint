@@ -5,16 +5,74 @@ import { ValueField } from "value.slint";
 import { Bar } from "bar.slint";
 
 component LambdaColumn {
-	in property <float> progress;
-    Bar {
-		height: 200px;
-		width: 200px;
-		value: root.progress;
+	in property <float> temperature;
+	in property <float> pression;
+	in property <float> lambda;
+	in property <float> konstant;
+	lambda: 0.23232;
+
+    VerticalLayout {
+		width: 100px;
+		alignment: center;
+
+		spacing: -30px;
+
+		HorizontalLayout { 
+			spacing: 70px;
+			ValueField {
+				label: "Temp:";
+				um: "C°";
+				value: temperature;
+			}
+
+			ValueField {
+				label: "Pressione:";
+				um: "bar";
+				value: pression;
+			}
+		}
+
+		HorizontalLayout { 
+			spacing: 50px;
+			ValueField {
+				label: "Altitudine:";
+				um: "";
+				value: pression;
+			}
+			ValueField {
+				label: "Giri motre:";
+				um: "rpm";
+				value: pression;
+			}
+		}
+
+
+			
+
+		VerticalLayout { 
+			ValueField {
+				label: "K = ";
+				um: "";
+				value: konstant;
+			}
+			Bar {
+				height: 200px;
+				width: 200px;
+				value: lambda;
+				divisions: 10;
+			}
+			
+		}
 	}
 }
 
+
 component PressureLine {
 	in property <float> progress;
+	in property <float> oil_pressure;
+	in property <float> fuel_pressure;
+	in property <float> turbo_pressure;
+
 
     HorizontalBox {
 		width: 100px;
@@ -26,7 +84,7 @@ component PressureLine {
 			height: self.width;
 			width: 200px;
 			divisions: 10;
-			progress: root.progress;
+			progress: fuel_pressure;
 			low_level_alarm: 2;
 			high_level_alarm: 6;
 		}
@@ -36,7 +94,7 @@ component PressureLine {
 			height: self.width;
 			width: 200px;
 			divisions: 10;
-			progress: root.progress;
+			progress: oil_pressure;
 			low_level_alarm: 2;
 			high_level_alarm: 6;
 		}
@@ -46,7 +104,7 @@ component PressureLine {
 			height: self.width;
 			width: 200px;
 			divisions: 4;
-			progress: root.progress;
+			progress: turbo_pressure;
 			low_level_alarm: 2;
 			high_level_alarm: 6;
 		}
@@ -54,26 +112,26 @@ component PressureLine {
 	}
 }
 
-export component MainWindow {
+export component MainWindow inherits Window {
     width: 1300px;
 	height: 700px;
+	in property <int> oil_pressure;
+	in property <int> fuel_pressure;
+	in property <int> turbo_pressure;
 	VerticalBox {
 		width: 100px;
-		alignment: center;
-		spacing: 100px;
+		alignment: start;
 		x: 80px;
+		y: 130px;
 
 		PressureLine {
-			progress: slider.value * 1%;
+			oil_pressure: oil_pressure * 1%;
+			fuel_pressure: fuel_pressure * 1%;
+			turbo_pressure: turbo_pressure * 1%;
 		}
+		
+		LambdaColumn { }
 
-		LambdaColumn {
-			progress: slider.value * 1%;
-		}
-
-		slider := Slider {
-			value: 0;
-			maximum: 100;
-		}
+		
 	}
 }

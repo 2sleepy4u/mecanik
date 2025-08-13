@@ -2,6 +2,7 @@ import { AboutSlint, Button, VerticalBox, Palette, Slider } from "std-widgets.sl
 
 export component Bar {
 	in property <float> value; 
+	in property <int> divisions;
     private property <float> progress: clamp(value, 0, 1);
     path := Path {
         viewbox-width: 1;
@@ -18,13 +19,45 @@ export component Bar {
         }
 
         LineTo {
-            x: progress;
+            x: 1;
             y: 0;
         }
 
 		Close {}
        
     }
+
+	for n in divisions+1: Rectangle {
+		Text {
+			text: n;
+			font-size: 20px;
+			x: (n * divisions * 2px) - 10px;
+			y: 20px;
+		}
+
+		Path {
+			viewbox-width: 1;
+			viewbox-height: 1;
+			width: 100%;
+			height: 100%;
+
+			stroke-width: 2px;
+			stroke: Palette.foreground;
+
+			MoveTo {
+				x: n / 10;
+				y: -0.05;
+			}
+
+			LineTo {
+				x: n / 10;
+				y: 0.10;
+			}
+
+			Close {}
+		   
+		}
+	}
 
 	indicator := Path {
         viewbox-width: 1;
@@ -42,7 +75,7 @@ export component Bar {
 
         LineTo {
             x: progress;
-            y: 0.10;
+            y: 0.15;
         }
 
 		Close {}
