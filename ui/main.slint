@@ -1,19 +1,79 @@
-import { AboutSlint, Button, VerticalBox, Palette, Slider } from "std-widgets.slint";
+import { AboutSlint, Button, VerticalBox, Palette, Slider, HorizontalBox } from "std-widgets.slint";
+import { DashProgress } from "./dash.slint";
 import { CircularProgress } from "./gauge.slint";
+import { ValueField } from "value.slint";
+import { Bar } from "bar.slint";
+
+component LambdaColumn {
+	in property <float> progress;
+    Bar {
+		height: 200px;
+		width: 200px;
+		value: root.progress;
+	}
+}
+
+component PressureLine {
+	in property <float> progress;
+
+    HorizontalBox {
+		width: 100px;
+		alignment: center;
+		spacing: 200px;
+
+		benzina := DashProgress {
+			label: "Benzina";
+			height: self.width;
+			width: 200px;
+			divisions: 10;
+			progress: root.progress;
+			low_level_alarm: 2;
+			high_level_alarm: 6;
+		}
+
+		olio := DashProgress {
+			label: "Olio";
+			height: self.width;
+			width: 200px;
+			divisions: 10;
+			progress: root.progress;
+			low_level_alarm: 2;
+			high_level_alarm: 6;
+		}
+
+		turbo := DashProgress {
+			label: "Turbo";
+			height: self.width;
+			width: 200px;
+			divisions: 4;
+			progress: root.progress;
+			low_level_alarm: 2;
+			high_level_alarm: 6;
+		}
+
+	}
+}
 
 export component MainWindow {
-    VerticalBox {
-        width: 100px;
-        alignment: start;
+    width: 1300px;
+	height: 700px;
+	VerticalBox {
+		width: 100px;
+		alignment: center;
+		spacing: 100px;
+		x: 80px;
 
-       
-        progress := CircularProgress {
-            height: self.width;
-            progress: slider.value * 1%;
-        }
-        slider := Slider {
-            value: 75;
-            maximum: 100;
-        }
-    }
+		PressureLine {
+			progress: slider.value * 1%;
+		}
+
+		LambdaColumn {
+			progress: slider.value * 1%;
+		}
+
+		slider := Slider {
+			value: 0;
+			maximum: 100;
+		}
+	}
 }

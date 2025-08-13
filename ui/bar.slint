@@ -1,0 +1,51 @@
+import { AboutSlint, Button, VerticalBox, Palette, Slider } from "std-widgets.slint";
+
+export component Bar {
+	in property <float> value; 
+    private property <float> progress: clamp(value, 0, 1);
+    path := Path {
+        viewbox-width: 1;
+        viewbox-height: 1;
+        width: 100%;
+        height: 100%;
+
+        stroke-width: 20px;
+        stroke: Palette.accent-background;
+
+        MoveTo {
+            x: 0;
+            y: 0;
+        }
+
+        LineTo {
+            x: progress;
+            y: 0;
+        }
+
+		Close {}
+       
+    }
+
+	indicator := Path {
+        viewbox-width: 1;
+        viewbox-height: 1;
+        width: 100%;
+        height: 100%;
+
+        stroke-width: 2px;
+        stroke: Palette.foreground;
+
+        MoveTo {
+            x: progress;
+            y: -0.10;
+        }
+
+        LineTo {
+            x: progress;
+            y: 0.10;
+        }
+
+		Close {}
+       
+    }
+}

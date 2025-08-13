@@ -1,0 +1,131 @@
+import { AboutSlint, Button, VerticalBox, Palette, Slider } from "std-widgets.slint";
+
+
+export component DashProgress {
+    preferred-height: 100%;
+    preferred-width: 100%;
+	label: "test";
+    in property <float> progress;
+    in property <int> divisions;
+    in property <string> label;
+
+	//livello minimo pressione prima dell'allarme
+	in property <int> low_level_alarm;
+	//massimo minimo pressione prima dell'allarme
+	in property <int> high_level_alarm;
+	private property <color> custom_color: {
+		if(root.progress * divisions < low_level_alarm) {
+			red;
+		} else if(root.progress * divisions > high_level_alarm) {
+			orange;
+		} else {
+			green;
+		}
+	};
+
+	Text {
+		y: -120px;
+		font-size: 20px;
+		text: label;
+	}
+
+	for n in divisions+1: Rectangle {
+		//TODO improve
+		private property <angle> turn: 0.5turn / divisions;
+		private property <length> posx: parent.width / 2.2 - parent.width / 1.22 * cos(n*turn);
+		private property <length> posy: parent.height / 2.25 + parent.height * 1.7 * path.radius * sin(n * -turn);
+
+		Text {
+			text: n;
+			font-size: 20px;
+			color: white;
+			x: posx;
+			y: posy;
+		}
+
+		Path {
+			stroke-width: 1px;
+			stroke: white;
+			viewbox-width: 1;
+			viewbox-height: 1;
+			width: 100%;
+			height: 50%;
+
+			MoveTo {
+				x: 0.5 - 1.5 *cos((n * turn ) );
+				y: 0.5 - 1.5 * sin((n * turn ) );
+			}
+
+			LineTo {
+				x:  0.5 - 1.25 * cos((n * turn ) );
+				y:  0.5 - 1.25 * sin((n * turn ) );
+			}
+		}
+
+	}
+    path := Path {
+        private property <float> radius: 0.5;
+        private property <angle> progress: clamp(root.progress * 0.5turn, 0, 0.5turn);
+
+        viewbox-width: 1;
+        viewbox-height: 1;
+        width: 100%;
+        height: 100%;
+
+        stroke-width: 10px;
+		stroke: custom_color;
+
+		MoveTo {
+			x: 0;
+			y: 0.5;
+		}
+        
+        ArcTo {
+            radius-x: path.radius;
+            radius-y: path.radius;
+            x: 0.5 - path.radius * cos(path.progress);
+            y: 0.5 - path.radius * sin(path.progress);
+            sweep: true;
+        }
+       
+    }
+
+	Path {
+        viewbox-width: 1;
+        viewbox-height: 1;
+        width: 100%;
+        height: 50%;
+
+        stroke-width: 5px;
+        stroke-line-cap: round;
+        stroke: Palette.foreground;
+
+        MoveTo {
+            x: 0.5;
+            y: 0.5;
+        }
+
+        LineTo {
+            x: 0.5 - cos((path.progress ) );
+            y: 0.5 - sin((path.progress ) );
+        }
+       
+    }
+
+    text := Text {
+		y: 100px;
+        font-size: parent.width / 4;
+        color: custom_color;
+		text: (progress * divisions).to-precision(2).to-float();
+    }
+
+    Text {
+        font-size: parent.width / 8;
+        y: text.y + text.height - self.height - self.font-size/4;
+        x: text.x + text.width;
+        text: "bar";
+    }
+
+}
+
+

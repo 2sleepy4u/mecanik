@@ -1,0 +1,43 @@
+import { Palette } from "std-widgets.slint";
+export component ValueField {
+	preferred-height: 100%;
+	preferred-width: 100%;
+	label: "Label";
+	um: "um";
+    in property <float> value;
+	in property <string> label;
+	in property <string> um;
+	HorizontalLayout {
+		width: 100%;
+		height: 100%;
+		spacing: 10px;
+		Text {
+			text: label;
+			color: Palette.foreground;
+			horizontal-alignment: center;
+			vertical-alignment: center;
+			font-size: parent.width / 4;
+			width: 33%;
+			height: 33%;
+		}
+		Text {
+			text: value;
+			color: value < 66 ? green : value > 80 ? red : orange;
+			// color: Palette.accent-background;
+			horizontal-alignment: center;
+			vertical-alignment: center;
+			font-size: parent.width / 4;
+			width: 33%;
+			height: 33%;
+		}
+		Text {
+			text: um;
+			horizontal-alignment: center;
+			vertical-alignment: center;
+			font-size: parent.width / 4;
+			width: 33%;
+			height: 33%;
+		}
+	}
+
+}
